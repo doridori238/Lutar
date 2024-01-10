@@ -16,8 +16,8 @@ public class GameManager : Singleton<GameManager>
     private float maxPlayTime = 100;
 
 
-    public Character character;
-    public Character target;
+    //public Character character;
+    //public Character target;
 
 
     public TextMeshProUGUI playTimeText;
@@ -38,7 +38,6 @@ public class GameManager : Singleton<GameManager>
 
 
 
-
     public bool PlayState
     {
         get { return playState; }
@@ -52,7 +51,20 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
 
+        KetSet();
 
+        if (DataSaver.instance.selectIndex == 0)
+            PlayerLeftPosition();
+        else
+            PlayerRightPosition();
+
+
+        coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
+    }
+
+
+    public void KetSet()
+    {
         playerLeftKey.forwardKey = KeyCode.D;
         playerLeftKey.backwardKey = KeyCode.A;
         playerLeftKey.highKickKey = KeyCode.W;
@@ -70,19 +82,8 @@ public class GameManager : Singleton<GameManager>
         playerRightKey.parryingKey = KeyCode.Keypad5;
         playerRightKey.jabKey = KeyCode.Keypad1;
         playerRightKey.punchKey = KeyCode.Keypad3;
-        
 
-        if (DataSaver.instance.selectIndex == 0)
-            PlayerLeftPosition();
-        else
-            PlayerRightPosition();
-
-
-        coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
     }
-
-
-
 
     public void PlayerLeftPosition()
     {
@@ -106,6 +107,8 @@ public class GameManager : Singleton<GameManager>
 
        
     }
+
+
 
     public void PlayerRightPosition()
     {

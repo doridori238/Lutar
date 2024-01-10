@@ -1,28 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum KICK_TYPE
+
+public enum AllMove_TYPE
 {
-   HIGH,
-   MIDDLE,
-   LOW
-}
-public enum PUNCH_TYPE
-{
-   PLEFT,
-   PRIGHT
+    HIGHKICK,
+    MIDDLEKICK,
+    LOWKCIK,
+
+    PLEFTPUNCH,
+    PRIGHTPUNCH,
+
+    LMOVE,
+    RMOVE,
+
+    PARRY
 }
 
-public enum MOVE
-{ 
-   LEFT,
-   RIGHT
-}
-
-public enum PARRYING
-{ 
-   PARRY
-}
 
 [System.Serializable]
 public class PlayerKey
@@ -44,10 +38,7 @@ public class AnimatorManager : MonoBehaviour
 
     public PlayerKey key;
 
-    public string[] kickNames = new string[3];
-    public string[] punchNames = new string[2];
-    public string[] moves = new string[2];
-    public string[] parrying = new string[1];
+    public string[] allMoveName = new string[8];
         
     public Animator animator = null;
     private float time = 0;
@@ -65,10 +56,9 @@ public class AnimatorManager : MonoBehaviour
     {
       if (Input.GetKeyDown(key.middleKickKey))
       {
+            gameManager.PlayState = true;
             StartCoroutine(AddInputKeyCo());
-         
       }
-        gameManager.PlayState = true;
     }
 
       
@@ -76,22 +66,16 @@ public class AnimatorManager : MonoBehaviour
     {
        if (time <= 0.5f)
        {
-          if (Input.GetKey(key.highKickKey))
-            {
-                gameManager.PlayState = true;
-                animator.SetTrigger(kickNames[(int)KICK_TYPE.HIGH]);
-          }
-          else if (Input.GetKey(key.lowKickKey))
-            {
-                gameManager.PlayState = true;
-                animator.SetTrigger(kickNames[(int)KICK_TYPE.LOW]);
-          }
-          else
-            {
-                gameManager.PlayState = true;
-                animator.SetTrigger(kickNames[(int)KICK_TYPE.MIDDLE]);
+          if (Input.GetKey(key.highKickKey))           
+                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.HIGHKICK]);         
+          
+          else if (Input.GetKey(key.lowKickKey))                        
+                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LOWKCIK]);          
+         
+          else            
+                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.MIDDLEKICK]);
                     
-          }
+         
        }
        yield return null;
     }
@@ -101,12 +85,12 @@ public class AnimatorManager : MonoBehaviour
         gameManager.PlayState = true;
         if (Input.GetKeyDown(key.jabKey))
        {
-          animator.SetTrigger(punchNames[(int)PUNCH_TYPE.PLEFT]);
+          animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PLEFTPUNCH]);
        }
 
        if (Input.GetKeyDown(key.punchKey))
        {
-          animator.SetTrigger(punchNames[(int)PUNCH_TYPE.PRIGHT]);
+          animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PRIGHTPUNCH]);
        }
 
     }
@@ -116,7 +100,7 @@ public class AnimatorManager : MonoBehaviour
         gameManager.PlayState = true;
         if (Input.GetKeyDown(key.parryingKey))
        {
-          animator.SetTrigger(parrying[(int)PARRYING.PARRY]);
+          animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PARRY]);
        }
 
 
@@ -128,15 +112,16 @@ public class AnimatorManager : MonoBehaviour
         gameManager.PlayState = true;
         if (Input.GetKeyDown(key.forwardKey))
        {
-            if (Vector3.Distance(player.targetCharacter.transform.position,player.transform.position) >= 1)
-            { 
-              animator.SetTrigger( moves[(int)MOVE.RIGHT]);
+            if (Vector3.Distance(player.targetCharacter.transform.position, player.transform.position) >= 1)
+            {
+                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.RMOVE]);
             }
+            else return;
        }
 
        if (Input.GetKeyDown(key.backwardKey))
        {
-          animator.SetTrigger(moves[(int)MOVE.LEFT]);
+          animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LMOVE]);
 
        }
     }
@@ -146,21 +131,12 @@ public class AnimatorManager : MonoBehaviour
 
     void ResetAllTrigger()
     {
-        foreach(string s in kickNames)
+       
+        foreach (string s in allMoveName)
         {
             animator.ResetTrigger(s);
         }
-        foreach (string s in punchNames)
-        {
-            animator.ResetTrigger(s);
-        }
-        foreach (string s in moves)
-        {
-            animator.ResetTrigger(s);
-        }foreach(string s in parrying)
-        {
-            animator.ResetTrigger(s);
-        }
+
     }
 
 
