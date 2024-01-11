@@ -1,25 +1,20 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.GraphicsBuffer;
+
 
 
 public class GameManager : Singleton<GameManager>
 {
+   
+
     private float maxPlayTime = 100;
     public bool isMove = false;
 
-    //public Character character;
-    //public Character target;
-
+  
 
     public TextMeshProUGUI playTimeText;
     private bool playState;
@@ -28,21 +23,21 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject mPlayerPrefab;
     [SerializeField] private GameObject wPlayerPrefab;
     private GameObject mPlayerCopy;
-    private GameObject WPlayerCopy;
+    private GameObject wPlayerCopy;
+
+    //private GameObject playerCopy;
 
     public Image leftPlayerHpBar;
     public Image rightPlayerHpBar;
 
+    private int LmaxHp;
+    //private int LimageHp;
+
+    private int RmaxHp;
+    private int RimageHp;
 
     PlayerKey playerLeftKey = new PlayerKey();
     PlayerKey playerRightKey = new PlayerKey();
-
-    Dictionary<Index, Action> playerSettingDic = new Dictionary<Index, Action>();
-
-    Action action;
-
-   // delegate void CustomDel(int Index)
-        // eunm을 이용해서 해볼까....?
 
 
     public bool PlayState
@@ -57,23 +52,15 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {
-
         KetSet();
 
-        //PlayerSet();
+        PlayerSet(mPlayerPrefab);
 
-        // coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
+        PlayerSet(wPlayerPrefab);
 
-        //playerSettingDic.Add( 0 , action);
-
-
-        //action = () => { };
-
-
-
+        coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
 
     }
-
 
     public void KetSet()
     {
@@ -97,77 +84,33 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    //public void PlayerLeftPosition()
-    //{
 
-    //    PlayerSet(wPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));
-    //    WPlayerCopy.SetActive(true);
-    //    WPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
-    //    //WPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
-    //    distanceObj.leftTarget = WPlayerCopy.GetComponent<Character>().target;
-
-
-    //    mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
-    //    mPlayerCopy.SetActive(true);
-    //    mPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
-    //   // mPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
-    //    distanceObj.rightTarget = mPlayerCopy.GetComponent<Character>().target;
-
-
-    //    //WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
-    //    //mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
-
-       
-    //}
-
-
-    public void PlayerSet(GameObject player, Vector3 pot ,Quaternion rot )
+    public void PlayerSet(GameObject playerPrefab)
     {
-        player = Instantiate(player, pot, rot);
-        if (DataSaver.instance.selectIndex == 0)
+        if (DataSaver.instance.selectIndex == 1)
         {
-            player.SetActive(true);
-            player.GetComponent<AnimatorManager>().key = playerLeftKey;
-            player.GetComponent<UiManager>().LHpImage = leftPlayerHpBar;
-            distanceObj.leftTarget = player.GetComponent<Character>().target;
+            mPlayerCopy = Instantiate(playerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));
+            mPlayerCopy.SetActive(true);
+            mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
+            LmaxHp = mPlayerCopy.GetComponent<Character>().MaxHp;
+            UiManager.instance.LHpImage.fillAmount = mPlayerCopy.GetComponent<Character>().LimageHp / (float)LmaxHp;
+            UiManager.instance.LHpImage = leftPlayerHpBar;
+            distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
+            DataSaver.instance.selectIndex = 0;
         }
-        else
+        else if (DataSaver.instance.selectIndex != 1)
         {
-            player.SetActive(true);
-            player.GetComponent<AnimatorManager>().key = playerRightKey;
-            player.GetComponent<UiManager>().RHpImage = leftPlayerHpBar;
-            distanceObj.rightTarget = player.GetComponent<Character>().target;
+            wPlayerCopy = Instantiate(playerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0)));
+            wPlayerCopy.SetActive(true);
+            wPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
+            RmaxHp = wPlayerCopy.GetComponent<Character>().MaxHp;
+            RimageHp = wPlayerCopy.GetComponent<Character>().Hp;
+            UiManager.instance.RHpImage.fillAmount = wPlayerCopy.GetComponent<Character>().RimageHp / (float)RmaxHp;
+            UiManager.instance.RHpImage = rightPlayerHpBar;
+            distanceObj.rightTarget = wPlayerCopy.GetComponent<Character>().target;
+            DataSaver.instance.selectIndex = 1;
         }
-    
-    }
 
-
-    //public void PlayerRightPosition()
-    //{
-    //    mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));//  new Quaternion(0, 90, 0));
-    //    mPlayerCopy.SetActive(true);
-    //    mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
-    //    //mPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
-    //    distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
-
-
-    //    WPlayerCopy = Instantiate(wPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
-    //    WPlayerCopy.SetActive(true);
-    //    WPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
-    //   // WPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
-    //    distanceObj.rightTarget = WPlayerCopy.GetComponent<Character>().target;
-
-    //    WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
-    //    mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
-
-
-    //}
-
-
-    public void HpImageBar() // 이미지 두개! // 수정해야함 -> 이미지가 두개로 늘었기 때문에 손을 봐야함[매개변수를 2개 사용하던가 말던가]
-    {
-        isMove = false;
-        //HpImage.fillAmount = (float)imageHp / (float)maxHp;
     }
 
 
@@ -181,7 +124,7 @@ public class GameManager : Singleton<GameManager>
 
     void TimeStop()
     {
-        if (WPlayerCopy.GetComponent<Character>().Hp <= 0)
+        if (wPlayerCopy.GetComponent<Character>().Hp <= 0)
         {
             StopCoroutine(coroutine);
         }
@@ -210,20 +153,20 @@ public class GameManager : Singleton<GameManager>
 
     public void GameOverJugement()
     {
-       
-        if (WPlayerCopy.GetComponent<Character>().Hp >= mPlayerCopy.GetComponent<Character>().Hp)
+
+        if (wPlayerCopy.GetComponent<Character>().Hp >= mPlayerCopy.GetComponent<Character>().Hp)
         {
-            WPlayerCopy.GetComponent<Character>().Win();
+            wPlayerCopy.GetComponent<Character>().Win();
             mPlayerCopy.GetComponent<Character>().Lose();
         }
-        if (WPlayerCopy.GetComponent<Character>().Hp <= mPlayerCopy.GetComponent<Character>().Hp)
+        if (wPlayerCopy.GetComponent<Character>().Hp <= mPlayerCopy.GetComponent<Character>().Hp)
         {
-            WPlayerCopy.GetComponent<Character>().Lose();
+            wPlayerCopy.GetComponent<Character>().Lose();
             mPlayerCopy.GetComponent<Character>().Win();
         }
-        if (WPlayerCopy.GetComponent<Character>().Hp == mPlayerCopy.GetComponent<Character>().Hp)
+        if (wPlayerCopy.GetComponent<Character>().Hp == mPlayerCopy.GetComponent<Character>().Hp)
         {
-            WPlayerCopy.GetComponent<Character>().Win();
+            wPlayerCopy.GetComponent<Character>().Win();
             mPlayerCopy.GetComponent<Character>().Win();
         }
 

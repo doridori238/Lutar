@@ -6,7 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms;
 
-public class UiManager : MonoBehaviour
+public class UiManager : Singleton<UiManager>
 {
     public bool state;
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3385,16 +3385,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e83fa79415df9914a88071e4d41ad611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 4817376034676469046, guid: 32886c728bdaf784e91008ad64f74b29, type: 3}
-  target: {fileID: 4743518190307173139, guid: 0e76d757b8444ba4aa7cad8ff0b868a7, type: 3}
+  isMove: 0
   playTimeText: {fileID: 1848593808}
   distanceObj: {fileID: 892310544}
   mPlayerPrefab: {fileID: 4817376034041874554, guid: 32886c728bdaf784e91008ad64f74b29, type: 3}
   wPlayerPrefab: {fileID: 4743518190065840180, guid: 0e76d757b8444ba4aa7cad8ff0b868a7, type: 3}
   leftPlayerHpBar: {fileID: 596635081}
   rightPlayerHpBar: {fileID: 919253525}
-  choiceMButton: {fileID: 0}
-  choiceWButton: {fileID: 0}
 --- !u!4 &877034946
 Transform:
   m_ObjectHideFlags: 0
@@ -8877,6 +8874,8 @@ MonoBehaviour:
   explanation: {fileID: 0}
   setImage: {fileID: 517880922}
   main: {fileID: 0}
+  LHpImage: {fileID: 596635081}
+  RHpImage: {fileID: 919253525}
 --- !u!4 &2061190584
 Transform:
   m_ObjectHideFlags: 0

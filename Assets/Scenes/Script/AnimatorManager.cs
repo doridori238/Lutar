@@ -47,7 +47,7 @@ public class AnimatorManager : MonoBehaviour
 
     void Start()
     {
-       animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         gameManager = GameManager.instance;
         player = GetComponent<Character>();
     }

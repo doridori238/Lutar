@@ -40,7 +40,8 @@ public class Character : MonoBehaviour
 
     public AudioClip humanClip;
 
- 
+    public int LimageHp;
+    public int RimageHp;
     private int maxHp;
 
     public bool IsNextAttackBonus
@@ -87,13 +88,15 @@ public class Character : MonoBehaviour
         get { return hp; }
         set
         {
-            hp = value;      
-            
+            hp = value;
+            LimageHp = value;
+            RimageHp = value;
+
             if (this.hp <= 0)
             {
                 Lose();
                 targetCharacter.Win();
-
+                
             }
 
         }
