@@ -22,10 +22,7 @@ public class Character : MonoBehaviour
     public Animator animator;
     
     public AnimatorManager animatorManager;
-    public bool isMove = false;
-    
-    
-    
+  
     public GameObject bonusePrefab;
     private GameObject bonuseCopy;
     public GameObject winPrefab;
@@ -43,8 +40,8 @@ public class Character : MonoBehaviour
 
     public AudioClip humanClip;
 
-    public  Image HpImage;
-    private int MaxHp;
+ 
+    private int maxHp;
 
     public bool IsNextAttackBonus
     {  
@@ -74,9 +71,13 @@ public class Character : MonoBehaviour
         animatorManager = GetComponent<AnimatorManager>();
         StartCoroutine(CoolTimeCo());
         
-        MaxHp = hp;
-
         originRot = transform.rotation;
+    }
+
+
+    public int MaxHp
+    {
+        get => maxHp;
     }
 
 
@@ -121,13 +122,15 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        isMove = false;
-        HpImage.fillAmount = (float)hp / (float)MaxHp;
+        //isMove = false;
+        //HpImage.fillAmount = (float)hp / (float)MaxHp;
         Vector3 zAxisOffset = new Vector3(transform.position.x, transform.position.y, 10);
         transform.rotation = originRot;
         transform.position = zAxisOffset;
 
     }
+
+    
 
 
     private bool isattacking;

@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,7 +15,7 @@ using static UnityEngine.GraphicsBuffer;
 public class GameManager : Singleton<GameManager>
 {
     private float maxPlayTime = 100;
-
+    public bool isMove = false;
 
     //public Character character;
     //public Character target;
@@ -36,6 +37,12 @@ public class GameManager : Singleton<GameManager>
     PlayerKey playerLeftKey = new PlayerKey();
     PlayerKey playerRightKey = new PlayerKey();
 
+    Dictionary<Index, Action> playerSettingDic = new Dictionary<Index, Action>();
+
+    Action action;
+
+   // delegate void CustomDel(int Index)
+        // eunm을 이용해서 해볼까....?
 
 
     public bool PlayState
@@ -53,13 +60,18 @@ public class GameManager : Singleton<GameManager>
 
         KetSet();
 
-        if (DataSaver.instance.selectIndex == 0)
-            PlayerLeftPosition();
-        else
-            PlayerRightPosition();
+        //PlayerSet();
+
+        // coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
+
+        //playerSettingDic.Add( 0 , action);
 
 
-        coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
+        //action = () => { };
+
+
+
+
     }
 
 
@@ -85,50 +97,77 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public void PlayerLeftPosition()
-    {
+    //public void PlayerLeftPosition()
+    //{
 
-        WPlayerCopy = Instantiate(wPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));//  new Quaternion(0, 90, 0));
-        WPlayerCopy.SetActive(true);
-        WPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
-        WPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
-        distanceObj.leftTarget = WPlayerCopy.GetComponent<Character>().target;
-
-
-        mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
-        mPlayerCopy.SetActive(true);
-        mPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
-        mPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
-        distanceObj.rightTarget = mPlayerCopy.GetComponent<Character>().target;
+    //    PlayerSet(wPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));
+    //    WPlayerCopy.SetActive(true);
+    //    WPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
+    //    //WPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
+    //    distanceObj.leftTarget = WPlayerCopy.GetComponent<Character>().target;
 
 
-        WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
-        mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
+    //    mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
+    //    mPlayerCopy.SetActive(true);
+    //    mPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
+    //   // mPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
+    //    distanceObj.rightTarget = mPlayerCopy.GetComponent<Character>().target;
+
+
+    //    //WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
+    //    //mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
 
        
+    //}
+
+
+    public void PlayerSet(GameObject player, Vector3 pot ,Quaternion rot )
+    {
+        player = Instantiate(player, pot, rot);
+        if (DataSaver.instance.selectIndex == 0)
+        {
+            player.SetActive(true);
+            player.GetComponent<AnimatorManager>().key = playerLeftKey;
+            player.GetComponent<UiManager>().LHpImage = leftPlayerHpBar;
+            distanceObj.leftTarget = player.GetComponent<Character>().target;
+        }
+        else
+        {
+            player.SetActive(true);
+            player.GetComponent<AnimatorManager>().key = playerRightKey;
+            player.GetComponent<UiManager>().RHpImage = leftPlayerHpBar;
+            distanceObj.rightTarget = player.GetComponent<Character>().target;
+        }
+    
     }
 
 
+    //public void PlayerRightPosition()
+    //{
+    //    mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));//  new Quaternion(0, 90, 0));
+    //    mPlayerCopy.SetActive(true);
+    //    mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
+    //    //mPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
+    //    distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
 
-    public void PlayerRightPosition()
+
+    //    WPlayerCopy = Instantiate(wPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
+    //    WPlayerCopy.SetActive(true);
+    //    WPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
+    //   // WPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
+    //    distanceObj.rightTarget = WPlayerCopy.GetComponent<Character>().target;
+
+    //    WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
+    //    mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
+
+
+    //}
+
+
+    public void HpImageBar() // 이미지 두개! // 수정해야함 -> 이미지가 두개로 늘었기 때문에 손을 봐야함[매개변수를 2개 사용하던가 말던가]
     {
-        mPlayerCopy = Instantiate(mPlayerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));//  new Quaternion(0, 90, 0));
-        mPlayerCopy.SetActive(true);
-        mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
-        mPlayerCopy.GetComponent<Character>().HpImage = leftPlayerHpBar;
-        distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
-
-
-        WPlayerCopy = Instantiate(wPlayerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0))); // new Quaternion(0, -90, 0));
-        WPlayerCopy.SetActive(true);
-        WPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
-        WPlayerCopy.GetComponent<Character>().HpImage = rightPlayerHpBar;
-        distanceObj.rightTarget = WPlayerCopy.GetComponent<Character>().target;
-
-        WPlayerCopy.GetComponent<Character>().targetCharacter = mPlayerCopy.GetComponent<Character>();
-        mPlayerCopy.GetComponent<Character>().targetCharacter = WPlayerCopy.GetComponent<Character>();
-
-
+        isMove = false;
+        //HpImage.fillAmount = (float)imageHp / (float)maxHp;
     }
 
 

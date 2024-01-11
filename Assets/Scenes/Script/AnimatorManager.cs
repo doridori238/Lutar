@@ -126,12 +126,14 @@ public class AnimatorManager : MonoBehaviour
        }
     }
 
-    
 
 
+    /// <summary>
+    /// 키 누적 막음
+    /// </summary>
     void ResetAllTrigger()
     {
-       
+
         foreach (string s in allMoveName)
         {
             animator.ResetTrigger(s);
