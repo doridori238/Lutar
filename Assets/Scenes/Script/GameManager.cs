@@ -31,13 +31,14 @@ public class GameManager : Singleton<GameManager>
     public Image rightPlayerHpBar;
 
     private int LmaxHp;
-    //private int LimageHp;
+    private int LimageHp;
 
     private int RmaxHp;
     private int RimageHp;
 
-    PlayerKey playerLeftKey = new PlayerKey();
-    PlayerKey playerRightKey = new PlayerKey();
+
+    [SerializeField] PlayerKey playerLeftKey = new PlayerKey();
+    [SerializeField] PlayerKey playerRightKey = new PlayerKey();
 
 
     public bool PlayState
@@ -55,7 +56,6 @@ public class GameManager : Singleton<GameManager>
         KetSet();
 
         PlayerSet(mPlayerPrefab);
-
         PlayerSet(wPlayerPrefab);
 
         coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
@@ -93,7 +93,8 @@ public class GameManager : Singleton<GameManager>
             mPlayerCopy.SetActive(true);
             mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
             LmaxHp = mPlayerCopy.GetComponent<Character>().MaxHp;
-            UiManager.instance.LHpImage.fillAmount = mPlayerCopy.GetComponent<Character>().LimageHp / (float)LmaxHp;
+            LimageHp = mPlayerCopy.GetComponent<Character>().Hp;
+            UiManager.instance.LHpImage.fillAmount = (float)LimageHp / (float)LmaxHp;
             UiManager.instance.LHpImage = leftPlayerHpBar;
             distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
             DataSaver.instance.selectIndex = 0;
@@ -105,7 +106,7 @@ public class GameManager : Singleton<GameManager>
             wPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
             RmaxHp = wPlayerCopy.GetComponent<Character>().MaxHp;
             RimageHp = wPlayerCopy.GetComponent<Character>().Hp;
-            UiManager.instance.RHpImage.fillAmount = wPlayerCopy.GetComponent<Character>().RimageHp / (float)RmaxHp;
+            UiManager.instance.RHpImage.fillAmount = (float)RimageHp / (float)RmaxHp;
             UiManager.instance.RHpImage = rightPlayerHpBar;
             distanceObj.rightTarget = wPlayerCopy.GetComponent<Character>().target;
             DataSaver.instance.selectIndex = 1;

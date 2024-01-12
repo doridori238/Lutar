@@ -40,8 +40,7 @@ public class Character : MonoBehaviour
 
     public AudioClip humanClip;
 
-    public int LimageHp;
-    public int RimageHp;
+   
     private int maxHp;
 
     public bool IsNextAttackBonus
@@ -89,8 +88,7 @@ public class Character : MonoBehaviour
         set
         {
             hp = value;
-            LimageHp = value;
-            RimageHp = value;
+           
 
             if (this.hp <= 0)
             {
@@ -125,8 +123,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        //isMove = false;
-        //HpImage.fillAmount = (float)hp / (float)MaxHp;
+       
         Vector3 zAxisOffset = new Vector3(transform.position.x, transform.position.y, 10);
         transform.rotation = originRot;
         transform.position = zAxisOffset;
