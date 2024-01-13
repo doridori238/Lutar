@@ -19,7 +19,7 @@ public enum AllMove_TYPE
 
 
 [System.Serializable]
-public class PlayerKey
+public struct PlayerKey
 {
     public KeyCode forwardKey;
     public KeyCode backwardKey;
@@ -31,11 +31,9 @@ public class PlayerKey
     public KeyCode punchKey;
 }
 
-
 public class AnimatorManager : MonoBehaviour
 {
-    public GameManager gameManager;
-
+    
     public PlayerKey key;
 
     public string[] allMoveName = new string[8];
@@ -48,15 +46,14 @@ public class AnimatorManager : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        gameManager = GameManager.instance;
-        player = GetComponent<Character>();
+        player = this.GetComponent<Character>();
     }
 
     public void InputKeycodeK() 
     {
       if (Input.GetKeyDown(key.middleKickKey))
       {
-            gameManager.PlayState = true;
+            GameManager.instance.PlayState = true;
             StartCoroutine(AddInputKeyCo());
       }
     }
@@ -82,7 +79,7 @@ public class AnimatorManager : MonoBehaviour
 
     public void Punch()
     {
-        gameManager.PlayState = true;
+        GameManager.instance.PlayState = true;
         if (Input.GetKeyDown(key.jabKey))
        {
           animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PLEFTPUNCH]);
@@ -97,7 +94,7 @@ public class AnimatorManager : MonoBehaviour
 
     public void Parrying()
     {
-        gameManager.PlayState = true;
+        GameManager.instance.PlayState = true;
         if (Input.GetKeyDown(key.parryingKey))
        {
           animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PARRY]);
@@ -109,10 +106,10 @@ public class AnimatorManager : MonoBehaviour
 
     public void PlayerMove()
     {
-        gameManager.PlayState = true;
+        GameManager.instance.PlayState = true;
         if (Input.GetKeyDown(key.forwardKey))
        {
-            if (Vector3.Distance(player.targetCharacter.transform.position, player.transform.position) >= 1)
+            if (Vector3.Distance(GameManager.instance.mPlayerCopy.transform.position, GameManager.instance.wPlayerCopy.transform.position) >= 1)
             {
                 animator.SetTrigger(allMoveName[(int)AllMove_TYPE.RMOVE]);
             }
@@ -122,7 +119,6 @@ public class AnimatorManager : MonoBehaviour
        if (Input.GetKeyDown(key.backwardKey))
        {
           animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LMOVE]);
-
        }
     }
 

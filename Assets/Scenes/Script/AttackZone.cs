@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static AttackZone;
+using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class AttackZoneDate
@@ -27,7 +28,7 @@ public class AttackZoneDate
 
 public class AttackZone : MonoBehaviour, IAttackAble
 {
-    public AttackZoneDate attackZoneDate;
+    public AttackZoneDate attackZoneDate = new AttackZoneDate();
     
     private void Start()
     {
@@ -47,7 +48,8 @@ public class AttackZone : MonoBehaviour, IAttackAble
 
     private void OnTriggerEnter(Collider other)
     {      
-        attackZoneDate.colliderAction();            
+        attackZoneDate.colliderAction();
+        
     }
 
     public void Attack(IHitAble hitAble)
@@ -61,7 +63,8 @@ public class AttackZone : MonoBehaviour, IAttackAble
         }
         else
             hitAble.Hit(attackZoneDate.atk);
-            attackZoneDate.actionEffectAdd();
+        attackZoneDate.actionEffectAdd();
+            
     }
 
   

@@ -158,8 +158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376033235696828
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,8 +387,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376033520916864
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,16 +613,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 1
-  prefab: {fileID: 4375576312709391085, guid: 011d0a308ee8f3d488c4df008f4727bf, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 1
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 2
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 1
 --- !u!1 &4817376033801195651
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,16 +714,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
-  prefab: {fileID: 4375576312709391085, guid: 011d0a308ee8f3d488c4df008f4727bf, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 1
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 2
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 2
 --- !u!1 &4817376033862782028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1194,32 +1206,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 4817376033235696828}
   hp: 300
-  isNextAttackBonus: 0
-  targetCharacter: {fileID: 0}
+  targetCharacter: {fileID: 4743518190307173139, guid: 0e76d757b8444ba4aa7cad8ff0b868a7, type: 3}
   animator: {fileID: 4817376033303181248}
   animatorManager: {fileID: 4817376033303181249}
-  isMove: 0
   bonusePrefab: {fileID: 6679002610472394333, guid: 14fcb3a7c052e3a4dbd55b78408b7f70, type: 3}
   winPrefab: {fileID: 7108808876012072824, guid: 6890f697366b57d4d91d437ba5f1dd1e, type: 3}
   losePrefab: {fileID: 6786550164114751434, guid: 52a0810c942ecd640aad4eeee101ba0e, type: 3}
   bonusClip: {fileID: 8300000, guid: dc2ba8ba2e6d50047ac3675e44021c5c, type: 3}
-  atkcapsuleColliders:
-  - {fileID: 4817376034410894463}
+  atkColliders:
   - {fileID: 4817376035077206037}
-  - {fileID: 4817376034261038737}
+  - {fileID: 4817376034410894463}
   - {fileID: 4817376033485104989}
-  atksphereColliders:
+  - {fileID: 4817376034261038737}
   - {fileID: 4817376034222285622}
   - {fileID: 4817376033179835921}
-  hitcapsuleColliders:
+  hitColliders:
+  - {fileID: 4817376034514027295}
+  - {fileID: 4817376034663419236}
+  - {fileID: 4817376033785496743}
+  - {fileID: 4817376034968361216}
   - {fileID: 4817376033805199254}
   - {fileID: 4817376034059076588}
-  - {fileID: 4817376033785496743}
-  - {fileID: 4817376034514027295}
-  - {fileID: 4817376034968361216}
-  hitsphereColliders:
-  - {fileID: 4817376034663419236}
-  HpImage: {fileID: 0}
   humanClip: {fileID: 8300000, guid: 8fb9a9370290f71448358dfe0dce9df3, type: 3}
 --- !u!114 &4817376033303181249
 MonoBehaviour:
@@ -1233,7 +1240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f780facd7998cf3419b1eabad4e86df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   key:
     forwardKey: 0
     backwardKey: 0
@@ -1243,17 +1249,14 @@ MonoBehaviour:
     parryingKey: 0
     jabKey: 0
     punchKey: 0
-  kickNames:
+  allMoveName:
   - HighKick
   - MiddleKick
   - LowerKick
-  punchNames:
   - Jab
   - SidePunch
-  moves:
   - backward
   - Forward
-  parrying:
   - Parrying
   animator: {fileID: 0}
 --- !u!1 &4817376034059076585
@@ -1316,16 +1319,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
-  prefab: {fileID: 4375576312709391085, guid: 011d0a308ee8f3d488c4df008f4727bf, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 1
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 2
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 2
 --- !u!1 &4817376034095136401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,8 +1520,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376034261038738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,8 +1589,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376034262449079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,8 +1883,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376034423432358
 GameObject:
   m_ObjectHideFlags: 0
@@ -2025,16 +2046,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
-  prefab: {fileID: 4375576312709391085, guid: 011d0a308ee8f3d488c4df008f4727bf, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 1
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 2
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 2
 --- !u!1 &4817376034520223337
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,16 +2274,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 1
-  prefab: {fileID: 6957814488672314589, guid: 4d556e46e0d8cd34fbb1364c896a69f6, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 2
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 4
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 1
 --- !u!1 &4817376034671633650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2543,16 +2564,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1d3d475f6199148953211d6975448e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
-  prefab: {fileID: 4375576312709391085, guid: 011d0a308ee8f3d488c4df008f4727bf, type: 3}
-  parryingPrefab: {fileID: 7475459639825081966, guid: c98787e93d6b6fd4a94a48d60bb43a2d, type: 3}
-  hitClip: {fileID: 8300000, guid: dd6a1145e096c104ba81691220beeea3, type: 3}
-  soundPrefab: {fileID: 1073879821157094238, guid: c820a0ade4ce3ad419907fdeda991bae, type: 3}
-  characterScript: {fileID: 4817376034676469046}
-  targetPlayer: {fileID: 0}
-  hitMul: 1
-  attackZone: {fileID: 0}
+  hitZoneDate:
+    hitClip: {fileID: 0}
+    soundPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    targetPlayer: {fileID: 0}
+    hitMul: 2
+    attackZone: {fileID: 0}
+  animator: {fileID: 0}
   isNextAttackBonus: 0
+  Type: 2
 --- !u!1 &4817376034983276559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,8 +2793,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029c2f46b027eb14688a6ca8d71793cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterScript: {fileID: 4817376034676469046}
-  atk: 10
+  attackZoneDate:
+    parryingPrefab: {fileID: 0}
+    parryingCopy: {fileID: 0}
+    effectcopy: {fileID: 0}
+    baseEffectPrefab: {fileID: 0}
+    characterScript: {fileID: 0}
+    atk: 10
+    bonusValue: 0
 --- !u!1 &4817376035101098069
 GameObject:
   m_ObjectHideFlags: 0

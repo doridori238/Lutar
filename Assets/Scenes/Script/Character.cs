@@ -14,6 +14,7 @@ public class Character : MonoBehaviour
     [SerializeField]
     private int hp;
 
+    public bool leftPlayer;
 
     private Quaternion originRot;
     private bool isAttacking;
@@ -30,17 +31,13 @@ public class Character : MonoBehaviour
     public GameObject losePrefab;
     private GameObject loseCopy;
 
-
     public AudioClip bonusClip;
-
 
     public Collider[] atkColliders = new Collider[6];
     public Collider[] hitColliders = new Collider[6];
 
-
     public AudioClip humanClip;
 
-   
     private int maxHp;
 
     public bool IsNextAttackBonus
@@ -88,7 +85,8 @@ public class Character : MonoBehaviour
         set
         {
             hp = value;
-           
+            UiManager.instance.HpUpdate((float)hp /(float)MaxHp, leftPlayer);
+            Debug.Log(Hp);
 
             if (this.hp <= 0)
             {

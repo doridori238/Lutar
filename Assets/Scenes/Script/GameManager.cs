@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 
@@ -10,25 +11,23 @@ using UnityEngine.UI;
 public class GameManager : Singleton<GameManager>
 {
    
-
     private float maxPlayTime = 100;
     public bool isMove = false;
 
   
-
     public TextMeshProUGUI playTimeText;
     private bool playState;
 
     [SerializeField] private PlayersDistance distanceObj;
     [SerializeField] private GameObject mPlayerPrefab;
     [SerializeField] private GameObject wPlayerPrefab;
-    private GameObject mPlayerCopy;
-    private GameObject wPlayerCopy;
+    public GameObject mPlayerCopy;
+    public GameObject wPlayerCopy;
 
-    //private GameObject playerCopy;
 
-    public Image leftPlayerHpBar;
-    public Image rightPlayerHpBar;
+
+    private Image leftPlayerHpBar;
+    private Image rightPlayerHpBar;
 
     private int LmaxHp;
     private int LimageHp;
@@ -37,8 +36,8 @@ public class GameManager : Singleton<GameManager>
     private int RimageHp;
 
 
-    [SerializeField] PlayerKey playerLeftKey = new PlayerKey();
-    [SerializeField] PlayerKey playerRightKey = new PlayerKey();
+    PlayerKey playerLeftKey = new PlayerKey();
+    PlayerKey playerRightKey = new PlayerKey();
 
 
     public bool PlayState
@@ -50,13 +49,16 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+   
 
     void Start()
     {
         KetSet();
 
-        PlayerSet(mPlayerPrefab);
+
         PlayerSet(wPlayerPrefab);
+        PlayerSet(mPlayerPrefab);
+
 
         coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
 
@@ -87,31 +89,42 @@ public class GameManager : Singleton<GameManager>
 
     public void PlayerSet(GameObject playerPrefab)
     {
+        //if (playerPrefab.GetComponent<Character>().targetCharacter == null)
+        //    return;
         if (DataSaver.instance.selectIndex == 1)
         {
-            mPlayerCopy = Instantiate(playerPrefab, new Vector3(15, (float)0.1, 7), Quaternion.Euler(new Vector3(0, 90, 0)));
-            mPlayerCopy.SetActive(true);
-            mPlayerCopy.GetComponent<AnimatorManager>().key = playerLeftKey;
-            LmaxHp = mPlayerCopy.GetComponent<Character>().MaxHp;
-            LimageHp = mPlayerCopy.GetComponent<Character>().Hp;
-            UiManager.instance.LHpImage.fillAmount = (float)LimageHp / (float)LmaxHp;
-            UiManager.instance.LHpImage = leftPlayerHpBar;
-            distanceObj.leftTarget = mPlayerCopy.GetComponent<Character>().target;
+            mPlayerCopy = Instantiate(playerPrefab, new Vector3(15, 0.1f, 7), Quaternion.Euler(new Vector3(0, 90, 0)));
+            SetPlayerInfo(mPlayerCopy, 0, playerLeftKey);
             DataSaver.instance.selectIndex = 0;
         }
         else if (DataSaver.instance.selectIndex != 1)
         {
-            wPlayerCopy = Instantiate(playerPrefab, new Vector3(20, (float)0.1, 7), Quaternion.Euler(new Vector3(0, -90, 0)));
-            wPlayerCopy.SetActive(true);
-            wPlayerCopy.GetComponent<AnimatorManager>().key = playerRightKey;
-            RmaxHp = wPlayerCopy.GetComponent<Character>().MaxHp;
-            RimageHp = wPlayerCopy.GetComponent<Character>().Hp;
-            UiManager.instance.RHpImage.fillAmount = (float)RimageHp / (float)RmaxHp;
-            UiManager.instance.RHpImage = rightPlayerHpBar;
-            distanceObj.rightTarget = wPlayerCopy.GetComponent<Character>().target;
+            wPlayerCopy = Instantiate(playerPrefab, new Vector3(20, 0.1f, 7), Quaternion.Euler(new Vector3(0, -90, 0)));
+            SetPlayerInfo(wPlayerCopy, 1, playerRightKey);
             DataSaver.instance.selectIndex = 1;
         }
+    }
 
+    void SetPlayerInfo(GameObject playerObj, int index, PlayerKey key)
+    {
+        playerObj.GetComponent<AnimatorManager>().key = key;
+        PlayState = true;
+        Character character = playerObj.GetComponent<Character>();
+        DataSaver.instance.selectIndex = index;
+        if (index == 0)
+        {
+            character.leftPlayer = true;
+            leftPlayerHpBar = UiManager.instance.LHpImage;
+            UiManager.instance.LHpImage.fillAmount = (float)character.Hp / (float)character.MaxHp;
+            distanceObj.leftTarget = character.target;
+        }
+        else
+        {
+            character.leftPlayer = false;
+            rightPlayerHpBar = UiManager.instance.RHpImage;
+            UiManager.instance.RHpImage.fillAmount = (float)character.Hp / (float)character.MaxHp;
+            distanceObj.rightTarget = character.target;
+        }
     }
 
 
@@ -145,7 +158,7 @@ public class GameManager : Singleton<GameManager>
             yield return null;
         }
         maxPlayTime = 0;
-        playState = false;
+        PlayState = false;
         playTimeText.text = " ½Ã°£ : " + (int)maxPlayTime;
         GameOverJugement();
 

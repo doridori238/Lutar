@@ -23,7 +23,19 @@ public class UiManager : Singleton<UiManager>
     private void Start()
     {
         state = false;
-        
+
+    }
+
+    public void HpUpdate(float hpPer, bool isOwnPlayer)
+    {
+        if (isOwnPlayer)
+        {
+            LHpImage.fillAmount = hpPer;
+        }
+        else
+        {
+            RHpImage.fillAmount = hpPer;
+        }
     }
 
     public void OnClickAudioButton(string name)

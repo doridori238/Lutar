@@ -13,9 +13,8 @@ public enum HIT_TYPE
 }
 
 [System.Serializable]
-public class HitZoneDate
+public struct HitZoneDate
 {
-    public Animator animator = null;
    
     public AudioClip hitClip;
     public GameObject soundPrefab;
@@ -25,14 +24,16 @@ public class HitZoneDate
     public float hitMul;
 
     public AttackZone attackZone;
-    public bool isNextAttackBonus = false;
 }
 
 
 public class HitZone : MonoBehaviour, IHitAble
 {
-    [SerializeField] HitZoneDate hitZoneDate;
+    public HitZoneDate hitZoneDate = new HitZoneDate();
 
+
+    public Animator animator = null;
+    public bool isNextAttackBonus = false;
 
     [SerializeField] HIT_TYPE Type;
 
@@ -56,9 +57,11 @@ public class HitZone : MonoBehaviour, IHitAble
    
     private void Start()
     {
-        hitZoneDate.characterScript = transform.root.GetComponent<Character>();
-        hitZoneDate.animator = transform.root.GetComponent<Animator>();
-        hitZoneDate.targetPlayer = hitZoneDate.characterScript.targetCharacter;
+        Character character = transform.root.GetComponent<Character>();
+        hitZoneDate.characterScript = character;
+        animator = character.gameObject.GetComponent<Animator>();
+        hitZoneDate.targetPlayer = character.targetCharacter;
+        
 
 
         atkDic.Add(HIT_TYPE.HEAD, "HitHead");
@@ -66,7 +69,7 @@ public class HitZone : MonoBehaviour, IHitAble
         atkDic.Add(HIT_TYPE.LEG, "HitLeg");
 
 
-        animatorDel = (string animatorName) => { hitZoneDate.animator.SetTrigger(animatorName); };
+        animatorDel = (string animatorName) => { animator.SetTrigger(animatorName); };
         colliderAction = () => {
                 foreach (var getHitColliders in hitZoneDate.characterScript.hitColliders)
                 {
@@ -79,11 +82,12 @@ public class HitZone : MonoBehaviour, IHitAble
 
     private void OnTriggerEnter(Collider other) 
     {
-        AttackZone attackZone = null;
+      
+        //AttackZone attackZone = null;
         if (other.GetComponent<AttackZone>() == null)
             return;
         else
-            attackZone = other.GetComponent<AttackZone>();
+            hitZoneDate.attackZone = other.GetComponent<AttackZone>();
 
 
         if (hitZoneDate.characterScript.IsParrying == true)
@@ -96,10 +100,10 @@ public class HitZone : MonoBehaviour, IHitAble
 
         else
         {       
-           Hit(attackZone.attackZoneDate.atk * (int)hitZoneDate.hitMul);
-           TYPE = Type;
-
-           hitZoneDate.targetPlayer.IsNextAttackBonus = false;
+           Hit(hitZoneDate.attackZone.attackZoneDate.atk * (int)hitZoneDate.hitMul);
+           //TYPE = Type;
+            
+            hitZoneDate.targetPlayer.IsNextAttackBonus = false;
         }
 
     }
@@ -115,6 +119,7 @@ public class HitZone : MonoBehaviour, IHitAble
 
         SoundManager.instance.Play(hitZoneDate.hitClip);
         hitZoneDate.characterScript.Hp -= damage;
+        
     }
 }
 
