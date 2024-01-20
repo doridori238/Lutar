@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public enum AllMove_TYPE
 {
     HIGHKICK,
@@ -47,6 +47,8 @@ public class AnimatorManager : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player = this.GetComponent<Character>();
+
+
     }
 
     public void InputKeycodeK() 
@@ -58,24 +60,46 @@ public class AnimatorManager : MonoBehaviour
       }
     }
 
-      
-    IEnumerator AddInputKeyCo() 
+
+    public class KeyInputYield : CustomYieldInstruction
     {
-       if (time <= 0.5f)
-       {
-          if (Input.GetKey(key.highKickKey))           
-                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.HIGHKICK]);         
-          
-          else if (Input.GetKey(key.lowKickKey))                        
-                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LOWKCIK]);          
-         
-          else            
-                animator.SetTrigger(allMoveName[(int)AllMove_TYPE.MIDDLEKICK]);
-                    
-         
-       }
-       yield return null;
+        Dictionary<KeyCode, Action> keyCodeDic = new Dictionary<KeyCode, Action>();
+        KeyCode[] keycodeArr;
+        public KeyInputYield(KeyCode[] keycodeArr, Action[] action)
+        {
+            this.keycodeArr = keycodeArr;
+            for (int i = 0; i < keycodeArr.Length; i++)
+                keyCodeDic.Add(keycodeArr[i], action[i]);   
+        }
+        public override bool keepWaiting
+        {
+            get 
+            {
+                foreach (KeyCode keyCode in keycodeArr)
+                {      
+                   if (Input.GetKey(keyCode))
+                   {
+                       keyCodeDic[keyCode]();
+                       return false;
+                   }                       
+                }
+                return true;
+            }   
+        }
     }
+
+    IEnumerator AddInputKeyCo()
+    {
+        KeyInputYield customCo = new KeyInputYield(
+                            new KeyCode[] { key.highKickKey, key.lowKickKey, key.middleKickKey },
+                            new Action[] { () => { animator.SetTrigger(allMoveName[(int)AllMove_TYPE.HIGHKICK]); }
+                                          ,() => { animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LOWKCIK]); } 
+                                          ,()=>  { animator.SetTrigger(allMoveName[(int)AllMove_TYPE.MIDDLEKICK]);
+                                          } });
+        yield return customCo;
+           
+    }
+
 
     public void Punch()
     {
