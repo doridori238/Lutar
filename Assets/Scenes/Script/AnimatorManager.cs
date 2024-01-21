@@ -18,7 +18,7 @@ public enum AllMove_TYPE
 }
 
 
-[System.Serializable]
+[Serializable]
 public struct PlayerKey
 {
     public KeyCode forwardKey;
@@ -29,6 +29,19 @@ public struct PlayerKey
     public KeyCode parryingKey;
     public KeyCode jabKey;
     public KeyCode punchKey;
+   public PlayerKey(PlayerData keyDate)
+    {
+
+        forwardKey = (KeyCode)keyDate.forWardKey;
+        backwardKey = (KeyCode)keyDate.backWardKey;
+        highKickKey = (KeyCode)keyDate.highKickKey;
+        middleKickKey = (KeyCode)keyDate.middleKickKey;
+        lowKickKey = (KeyCode)keyDate.lowKickKey;
+        parryingKey = (KeyCode)keyDate.parryingKey;
+        jabKey = (KeyCode)keyDate.jabKey;
+        punchKey = (KeyCode)keyDate.punchKey;
+
+    }
 }
 
 public class AnimatorManager : MonoBehaviour

@@ -5,12 +5,40 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using System.IO;
+
+[Serializable]
+public class PlayerData
+{
+    public int forWardKey;
+    public int backWardKey;
+    public int highKickKey;
+    public int middleKickKey;
+    public int lowKickKey;
+    public int parryingKey;
+    public int jabKey;
+    public int punchKey;
+
+    public PlayerData(int[] playerkey)
+    {
+        backWardKey = playerkey[0];
+        highKickKey = playerkey[1];
+        middleKickKey = playerkey[2];
+        lowKickKey = playerkey[3];
+        parryingKey = playerkey[4];
+        jabKey = playerkey[5];
+        punchKey = playerkey[6];
+        forWardKey = playerkey[7];
+
+    }
+
+}
 
 
 
 public class GameManager : Singleton<GameManager>
 {
-   
+    
     private float maxPlayTime = 100;
     public bool isMove = false;
 
@@ -36,10 +64,15 @@ public class GameManager : Singleton<GameManager>
     private int RimageHp;
 
 
-    PlayerKey playerLeftKey = new PlayerKey();
-    PlayerKey playerRightKey = new PlayerKey();
+    PlayerKey playerLeftKey;
+    PlayerKey playerRightKey;
+
+    
 
 
+
+    string path;
+   
     public bool PlayState
     {
         get { return playState; }
@@ -49,11 +82,39 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    //  LoadData("leftPlayerData")
+    //  LoadData("rightPlayerData")
+    public PlayerData LoadData(string fileName)
+    {
+       object a =  Resources.Load(fileName);
+
+        if (a != null)
+        {
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>((string)a);
+            return playerData;
+        }
+        else
+        {
+            a = File.CreateText(path);
+            return null; 
+        }
+
+    }
+
+
+
+
+
+
    
 
     void Start()
     {
-        KetSet();
+        //KetSet();
+      
+
+        playerLeftKey = new PlayerKey(LoadData("leftPlayer"));
+        playerRightKey = new PlayerKey(LoadData("rightPlayer"));
 
 
         PlayerSet(wPlayerPrefab);
@@ -64,27 +125,27 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    public void KetSet()
-    {
-        playerLeftKey.forwardKey = KeyCode.D;
-        playerLeftKey.backwardKey = KeyCode.A;
-        playerLeftKey.highKickKey = KeyCode.W;
-        playerLeftKey.middleKickKey = KeyCode.K;
-        playerLeftKey.lowKickKey = KeyCode.S;
-        playerLeftKey.parryingKey = KeyCode.I;
-        playerLeftKey.jabKey = KeyCode.J;
-        playerLeftKey.punchKey = KeyCode.L;
+    //public void KetSet()
+    //{
+    //    playerLeftKey.forwardKey = KeyCode.D;
+    //    playerLeftKey.backwardKey = KeyCode.A;
+    //    playerLeftKey.highKickKey = KeyCode.W;
+    //    playerLeftKey.middleKickKey = KeyCode.K;
+    //    playerLeftKey.lowKickKey = KeyCode.S;
+    //    playerLeftKey.parryingKey = KeyCode.I;
+    //    playerLeftKey.jabKey = KeyCode.J;
+    //    playerLeftKey.punchKey = KeyCode.L;
 
-        playerRightKey.forwardKey = KeyCode.LeftArrow;
-        playerRightKey.backwardKey = KeyCode.RightArrow;
-        playerRightKey.highKickKey = KeyCode.UpArrow;
-        playerRightKey.middleKickKey = KeyCode.Keypad2;
-        playerRightKey.lowKickKey = KeyCode.DownArrow;
-        playerRightKey.parryingKey = KeyCode.Keypad5;
-        playerRightKey.jabKey = KeyCode.Keypad1;
-        playerRightKey.punchKey = KeyCode.Keypad3;
+    //    playerRightKey.forwardKey = KeyCode.LeftArrow;
+    //    playerRightKey.backwardKey = KeyCode.RightArrow;
+    //    playerRightKey.highKickKey = KeyCode.UpArrow;
+    //    playerRightKey.middleKickKey = KeyCode.Keypad2;
+    //    playerRightKey.lowKickKey = KeyCode.DownArrow;
+    //    playerRightKey.parryingKey = KeyCode.Keypad5;
+    //    playerRightKey.jabKey = KeyCode.Keypad1;
+    //    playerRightKey.punchKey = KeyCode.Keypad3;
 
-    }
+    //}
 
 
     public void PlayerSet(GameObject playerPrefab)
