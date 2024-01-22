@@ -60,8 +60,6 @@ public class AnimatorManager : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         player = this.GetComponent<Character>();
-
-
     }
 
     public void InputKeycodeK() 
@@ -136,8 +134,6 @@ public class AnimatorManager : MonoBehaviour
        {
           animator.SetTrigger(allMoveName[(int)AllMove_TYPE.PARRY]);
        }
-
-
     }
 
 
@@ -158,8 +154,6 @@ public class AnimatorManager : MonoBehaviour
           animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LMOVE]);
        }
     }
-
-
 
     /// <summary>
     /// 키 누적 막음

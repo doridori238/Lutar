@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using System.IO;
+using JetBrains.Annotations;
 
 [Serializable]
 public class PlayerData
@@ -53,7 +54,6 @@ public class GameManager : Singleton<GameManager>
     public GameObject wPlayerCopy;
 
 
-
     private Image leftPlayerHpBar;
     private Image rightPlayerHpBar;
 
@@ -67,12 +67,11 @@ public class GameManager : Singleton<GameManager>
     PlayerKey playerLeftKey;
     PlayerKey playerRightKey;
 
-    
 
+    string path = @"Assets\Resources\";
+    string leftfilename = "LeftPlayerData";
+    string rightfilename = "RightPlayerDate";
 
-
-    string path;
-   
     public bool PlayState
     {
         get { return playState; }
@@ -82,39 +81,53 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    //  LoadData("leftPlayerData")
-    //  LoadData("rightPlayerData")
-    public PlayerData LoadData(string fileName)
-    {
-       object a =  Resources.Load(fileName);
 
-        if (a != null)
+    public void SaveDate(string filename, PlayerData data)
+    {
+        StreamWriter writer;
+
+        if (File.Exists(path + filename + ".txt") == false)
         {
-            PlayerData playerData = JsonUtility.FromJson<PlayerData>((string)a);
-            return playerData;
+            writer = File.CreateText(path + filename + ".txt");
+            writer.Write(JsonUtility.ToJson(data));
         }
         else
         {
-            a = File.CreateText(path);
-            return null; 
+            writer = new StreamWriter(path + filename + ".txt");
+            writer.Write(JsonUtility.ToJson(data));
         }
+        writer.Close();
+       
+    }
+
+    
+    public PlayerData LoadData(string fileName)
+    {
+       string loadfile = Resources.Load(fileName).ToString();
+        if (loadfile != null)
+        {
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(loadfile);
+          
+            return playerData;
+        }
+        return null;
 
     }
 
 
 
-
-
-
-   
-
     void Start()
     {
-        //KetSet();
-      
 
-        playerLeftKey = new PlayerKey(LoadData("leftPlayer"));
-        playerRightKey = new PlayerKey(LoadData("rightPlayer"));
+        SaveDate(leftfilename,new PlayerData(new int[]
+        { (int)KeyCode.A, (int)KeyCode.W,(int)KeyCode.K,(int)KeyCode.S,(int)KeyCode.I,(int)KeyCode.J,(int)KeyCode.L,(int)KeyCode.D }));
+        SaveDate(rightfilename, new PlayerData(new int[]
+        { (int)KeyCode.RightArrow,(int)KeyCode.UpArrow,(int)KeyCode.Keypad2,(int)KeyCode.DownArrow,(int)KeyCode.Keypad5,(int)KeyCode.Keypad1,(int)KeyCode.Keypad3,(int)KeyCode.LeftArrow }));
+
+
+        Debug.Log(LoadData(leftfilename));
+        playerLeftKey = new PlayerKey(LoadData(leftfilename));
+        playerRightKey = new PlayerKey(LoadData(rightfilename));
 
 
         PlayerSet(wPlayerPrefab);
@@ -125,33 +138,11 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    //public void KetSet()
-    //{
-    //    playerLeftKey.forwardKey = KeyCode.D;
-    //    playerLeftKey.backwardKey = KeyCode.A;
-    //    playerLeftKey.highKickKey = KeyCode.W;
-    //    playerLeftKey.middleKickKey = KeyCode.K;
-    //    playerLeftKey.lowKickKey = KeyCode.S;
-    //    playerLeftKey.parryingKey = KeyCode.I;
-    //    playerLeftKey.jabKey = KeyCode.J;
-    //    playerLeftKey.punchKey = KeyCode.L;
-
-    //    playerRightKey.forwardKey = KeyCode.LeftArrow;
-    //    playerRightKey.backwardKey = KeyCode.RightArrow;
-    //    playerRightKey.highKickKey = KeyCode.UpArrow;
-    //    playerRightKey.middleKickKey = KeyCode.Keypad2;
-    //    playerRightKey.lowKickKey = KeyCode.DownArrow;
-    //    playerRightKey.parryingKey = KeyCode.Keypad5;
-    //    playerRightKey.jabKey = KeyCode.Keypad1;
-    //    playerRightKey.punchKey = KeyCode.Keypad3;
-
-    //}
-
+  
 
     public void PlayerSet(GameObject playerPrefab)
     {
-        //if (playerPrefab.GetComponent<Character>().targetCharacter == null)
-        //    return;
+        
         if (DataSaver.instance.selectIndex == 1)
         {
             mPlayerCopy = Instantiate(playerPrefab, new Vector3(15, 0.1f, 7), Quaternion.Euler(new Vector3(0, 90, 0)));

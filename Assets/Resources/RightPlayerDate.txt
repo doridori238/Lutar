@@ -1,0 +1,1 @@
+{"forWardKey":276,"backWardKey":275,"highKickKey":273,"middleKickKey":258,"lowKickKey":274,"parryingKey":261,"jabKey":257,"punchKey":259}
