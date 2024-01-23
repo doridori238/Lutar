@@ -7,6 +7,7 @@ using UnityEngine.Playables;
 using UnityEngine.UI;
 using System.IO;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 [Serializable]
 public class PlayerData
@@ -63,6 +64,8 @@ public class GameManager : Singleton<GameManager>
     private int RmaxHp;
     private int RimageHp;
 
+    Character wPlayerCharacter;
+    Character mPlayerCharacter;
 
     PlayerKey playerLeftKey;
     PlayerKey playerRightKey;
@@ -133,6 +136,8 @@ public class GameManager : Singleton<GameManager>
         PlayerSet(wPlayerPrefab);
         PlayerSet(mPlayerPrefab);
 
+        wPlayerCharacter = wPlayerCopy.GetComponent<Character>();
+        mPlayerCharacter = mPlayerCopy.GetComponent<Character>();
 
         coroutine = StartCoroutine(PlayTimeCo(maxPlayTime));
 
@@ -185,19 +190,20 @@ public class GameManager : Singleton<GameManager>
         TimeStop();
     }
 
-
     Coroutine coroutine;
 
     void TimeStop()
     {
-        if (wPlayerCopy.GetComponent<Character>().Hp <= 0)
+
+        if (wPlayerCharacter.Hp <= 0)
         {
             StopCoroutine(coroutine);
         }
-        else if (mPlayerCopy.GetComponent<Character>().Hp <= 0)
+        else if (mPlayerCharacter.Hp <= 0)
         {
             StopCoroutine(coroutine);
         }
+   
     }
 
 

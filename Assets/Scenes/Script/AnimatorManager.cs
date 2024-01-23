@@ -74,23 +74,23 @@ public class AnimatorManager : MonoBehaviour
 
     public class KeyInputYield : CustomYieldInstruction
     {
-        Dictionary<KeyCode, Action> keyCodeDic = new Dictionary<KeyCode, Action>();
-        KeyCode[] keycodeArr;
+        Dictionary<KeyCode, Action> keycodeDic = new Dictionary<KeyCode, Action>();
+        KeyCode[] keycodeAllKick;
         public KeyInputYield(KeyCode[] keycodeArr, Action[] action)
         {
-            this.keycodeArr = keycodeArr;
+            this.keycodeAllKick = keycodeArr;
             for (int i = 0; i < keycodeArr.Length; i++)
-                keyCodeDic.Add(keycodeArr[i], action[i]);   
+                keycodeDic.Add(keycodeArr[i], action[i]);   
         }
         public override bool keepWaiting
         {
             get 
             {
-                foreach (KeyCode keyCode in keycodeArr)
+                foreach (KeyCode keyCode in keycodeAllKick)
                 {      
                    if (Input.GetKey(keyCode))
                    {
-                       keyCodeDic[keyCode]();
+                       keycodeDic[keyCode]();
                        return false;
                    }                       
                 }
@@ -107,8 +107,7 @@ public class AnimatorManager : MonoBehaviour
                                           ,() => { animator.SetTrigger(allMoveName[(int)AllMove_TYPE.LOWKCIK]); } 
                                           ,()=>  { animator.SetTrigger(allMoveName[(int)AllMove_TYPE.MIDDLEKICK]);
                                           } });
-        yield return customCo;
-           
+        yield return customCo;           
     }
 
 
